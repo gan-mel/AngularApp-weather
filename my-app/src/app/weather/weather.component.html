@@ -1,0 +1,9 @@
+<label>name:</label> 
+<input placeholder="name" [(ngModel)]="cityName">
+<button  mat-raised-button color="primary" (click) ="submitData(cityName); submitDataBox(cityName)" type="submit">Find Weather</button> 
+
+<button (click)="show=!show">{{show ? 'hide' : 'show'}}</button>
+
+<div *ngIf="show">
+  dfgdf
+</div>
