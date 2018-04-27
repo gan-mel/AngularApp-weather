@@ -64,7 +64,7 @@ currentImg() {
 
   } else if (this.weathers.weather[0].main.toLowerCase().indexOf('clouds') > -1) {
 
-    this.weathers.weather[0].image = 'https://dzineblog.com/wp-content/uploads/2012/10/01-sun-rays-after-rainfall.png';
+    this.weathers.weather[0].image = 'https://www.gannett-cdn.com/-mm-/8def3dce02e63b9ecafc9c62c37410ffe371f780/c=0-206-2054-1751&r=x404&c=534x401/local/-/media/MIGroup/PortHuron/2014/08/27/1409139184000-Cloudy.jpg';
 
   } else if (this.weathers.weather[0].main.toLowerCase().indexOf('clear') > -1) {
 
