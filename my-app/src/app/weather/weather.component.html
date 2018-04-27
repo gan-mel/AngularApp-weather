@@ -1,5 +1,5 @@
-    <!-- TODO: Add some navigation interaction, meanwhile disabling it -->
-    <!-- Navigation
+<!-- TODO: Add some navigation interaction, meanwhile disabling it -->
+<!-- Navigation
     <mat-menu #appMenu="matMenu">
         <button mat-menu-item>Settings</button>
         <button mat-menu-item>Help</button>
@@ -10,43 +10,40 @@
       </button>
        -->
 
-  
-      <!-- Page Content -->
-      <div class="container">
-  
-        <!-- Item Heading -->
-        <h1 class="my-4" style="padding-top: 29px;">iWeather Inc.
-        </h1>
-        <br>
-        <label>City:</label> 
-        <input placeholder="Enter city name" [(ngModel)]="cityName">
-        
-        <button mat-raised-button color="primary" (click) =" submitData(cityName); submitDataBox(cityName)" type="submit">Find Weather</button> 
-        <button mat-raised-button color="secondary" (click) ="condition = !condition" type="submit">+ 5 Day Forecast</button> 
 
- 
-        
-      
+<!-- Page Content -->
+<div class="container">
+    <!-- Item Heading -->
+    <h1 class="my-4" style="padding-top: 29px;">iWeather Inc.
+    </h1>
+    <br>
+    <label>City:</label>
+    <input placeholder="Enter city name" [(ngModel)]="cityName">
 
-     
-        
-        <br><br>
-        
-        <!-- Item Row -->
-        
-        <div class="row">
-          <div class="col-md-8">
+    <button mat-raised-button color="primary" (click)=" submitData(cityName); submitDataBox(cityName); test(cityName)" type="submit">Find Weather</button>
+    <button mat-raised-button color="secondary" (click)="condition = !condition" type="submit">+ 5 Day Forecast</button>
+
+
+
+
+
+    <br><br>
+
+    <!-- Item Row -->
+
+    <div class="row">
+        <div class="col-md-8">
 
             <span class="border"> <img class="img-fluid"  [src]="weathers.weather[0].image"></span>
-            
-          </div>
+
+        </div>
 
 
-<!--  if there is data to show, show it (you have to click the find weather button ofcourse to as for data) otherwise show nothing -->
-          <ng-container *ngIf="weathers.weather[0]; else nothingOne">
+        <!--  if there is data to show, show it (you have to click the find weather button ofcourse to as for data) otherwise show nothing -->
+        <ng-container *ngIf="weathers.weather[0]; else nothingOne">
 
- 
-          <!-- <div class="col-md-4">
+
+            <!-- <div class="col-md-4">
             <h3 class="my-3">{{weathers.name | uppercase}}</h3>
             <h4>{{ weathers.weather[0].main }}</h4>
             <h3 class="my-3">Weather Details</h3>
@@ -58,78 +55,77 @@
             </ul >
           </div> -->
 
-          <mat-card class="example-card col-md-4">
-              <mat-card-header>
-                  <h3 class="my-2">{{weathers.name | uppercase}}
-                    <br><br> 
-                    <span style="padding-top:40px"></span>
-                    {{ weathers.weather[0].main }}
-                  </h3>
-                  <br>
-                  <!-- <h4 style="padding-bottom:10px">{{weathers.name | uppercase}}</h4> -->
-              </mat-card-header>
-              <mat-card-content>
-                  <h3 class="my-1">Weather Details</h3>
+            <mat-card class="example-card col-md-4">
+                <mat-card-header>
+                    <h3 class="my-2">{{weathers.name | uppercase}}
+                        <br><br>
+                        <span style="padding-top:40px"></span> {{ weathers.weather[0].main }}
+                    </h3>
+                    <br>
+                    <!-- <h4 style="padding-bottom:10px">{{weathers.name | uppercase}}</h4> -->
+                </mat-card-header>
+                <mat-card-content>
+                    <h3 class="my-1">Weather Details</h3>
                     <li>{{ weathers.weather[0].description }}</li>
                     <li>Temperature (celsius): {{ weathers.main.temp }}</li>
                     <li>Wind speed (meter/sec): {{ weathers.wind.speed }}</li>
-              </mat-card-content>
+                </mat-card-content>
             </mat-card>
 
         </ng-container>
 
         <ng-template #nothingOne>
-             
+
         </ng-template>
         <!-- /.row -->
-  
+
         <!-- Related Projects Row -->
         <br><br><br><br><br><br><br><br><br><br><br>
-           
+
         <div class="row" style="padding-top:50px">
             <div class="col-lg-12" style="padding-top:50px">
-       <!-- If you click the show button, show the five day weather -->
-           <ng-container *ngIf="condition && forecasts.list[0] ; else nothingTwo">
+                <!-- If you click the show button, show the five day weather -->
+                <ng-container *ngIf="condition && forecasts.list[0] ; else nothingTwo">
 
-    
-    
 
-            <div *ngFor=" let forecast of forecasts.list">
-              
-        
-          <div class="col-md-3 col-sm-6 mb-4">
-            <a href="#">
+
+
+                    <div *ngFor=" let forecast of forecasts.list">
+
+
+                        <div class="col-md-3 col-sm-6 mb-4">
+                            <a href="#">
               <img class="img-fluid" [src]="forecast.image" style="padding-left:33%">
             </a>
-      
-          <div class="card bg-light mb-3" style="max-width: 18rem;">
-            <div class="card-header">Date: {{forecast.dt_txt | date : 'short' }}</div>
-            <div class="card-body" style="padding-left: 20px; padding-top: 10px;">
-              <h5 class="card-title">{{ forecast.weather[0].main }}</h5>
-              <p class="card-text">{{ forecast.weather[0].description }}</p>
-              <p class="card-text">Temperature: <p> {{ forecast.main.temp }}</p>
-            </div>
 
-        </div>
-        </div>
+                            <div class="card bg-light mb-3" style="max-width: 18rem;">
+                                <div class="card-header">Date: {{forecast.dt_txt | date : 'short' }}</div>
+                                <div class="card-body" style="padding-left: 20px; padding-top: 10px;">
+                                    <h5 class="card-title">{{ forecast.weather[0].main }}</h5>
+                                    <p class="card-text">{{ forecast.weather[0].description }}</p>
+                                    <p class="card-text">Temperature:
+                                        <p> {{ forecast.main.temp }}</p>
+                                </div>
 
-        <!-- /.row -->
-      </div>
-      <!-- /.container -->
-    </ng-container>
+                            </div>
+                        </div>
 
-<!-- Show nothing by default, click again to hide-->
-    <ng-template #nothingTwo>
-           
-    </ng-template>
-      <!-- Footer -->
-      <footer class="py-5 bg-dark">
-        <div class="container">
-          <p class="m-0 text-center text-white">Copyright &copy; Your Website 2018</p>
-        </div>
-        <!-- /.container -->
-      </footer>
-  
-      <!-- Bootstrap core JavaScript -->
-      <script src="vendor/jquery/jquery.min.js"></script>
-  
+                        <!-- /.row -->
+                    </div>
+                    <!-- /.container -->
+                </ng-container>
+
+                <!-- Show nothing by default, click again to hide-->
+                <ng-template #nothingTwo>
+
+                </ng-template>
+                <!-- Footer -->
+                <footer class="py-5 bg-dark">
+                    <div class="container">
+                        <p class="m-0 text-center text-white">Copyright &copy; Your Website 2018</p>
+                    </div>
+                    <!-- /.container -->
+                </footer>
+
+                <!-- Bootstrap core JavaScript -->
+                <script src="vendor/jquery/jquery.min.js"></script>

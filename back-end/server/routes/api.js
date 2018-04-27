@@ -15,18 +15,18 @@ const axios = require('axios');
 const BASE_URL = 'http://api.openweathermap.org/data/2.5/weather?q=';
 const AppID = '&appid=ccb590a0560985ff822bf94472c905cc';
 
-
+ //TODO for both: read from constant c
  // Get the current weather json /weather
 router.get('/getCity/:city', (req, res) => {
   const requestedCityName = req.params.city
   console.log("Got request " + requestedCityName)
-  console.log(CircularJSON.stringify(req.params) + " Request") 
+  console.log(req.params + " Request") 
 
  
   axios.get('http://api.openweathermap.org/data/2.5/weather?q='+requestedCityName+'&units=metric&appid=ccb590a0560985ff822bf94472c905cc')
   .then(weathers => {
      // console.log(res)
-      console.log(CircularJSON.stringify(weathers.data + "  Weather Requested"))
+      console.log(weathers.data + "  Weather Requested")
       res.status(200).json(weathers.data);
     })
     .catch(error => {
@@ -39,12 +39,12 @@ router.get('/getCity/:city', (req, res) => {
   router.get('/getCity/fiveday/:city', (req, res) => {
     const requestedCityNameF = req.params.city
     console.log("Got request " + requestedCityNameF)
-    console.log(CircularJSON.stringify(req.params) + " Request") 
+    console.log(req.params + " Request") 
 
 axios.get('http://api.openweathermap.org/data/2.5/forecast?q='+requestedCityNameF+'&units=metric&appid=ccb590a0560985ff822bf94472c905cc')
 .then(forecast => {
    // console.log(res)
-    console.log(CircularJSON.stringify(forecast.data + "  Forecast Requested"))
+    console.log(forecast.data + "  Forecast Requested")
     res.status(200).json(forecast.data);
   })
   .catch(error => {

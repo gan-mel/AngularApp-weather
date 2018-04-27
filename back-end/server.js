@@ -11,13 +11,20 @@ const app = express();
 
 // Parsers for POST data
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+    extended: false
+}));
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-      next();
-  })
+    next();
+})
+
+app.use(function (err, req, res, next) {
+  console.error(err.stack)
+  res.status(500).send('Something broke!')
+})
 
 // Point static path to dist
 app.use(express.static(path.join(__dirname, '../my-app/dist')));
@@ -27,7 +34,7 @@ app.use('/weather', api);
 
 // Catch all other routes and return the index file
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname,'../my-app/dist/index.html'));
+    res.sendFile(path.join(__dirname, '../my-app/dist/index.html'));
 });
 
 /**
