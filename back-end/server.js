@@ -20,14 +20,14 @@ app.use((req, res, next) => {
   })
 
 // Point static path to dist
-app.use(express.static(path.join(__dirname, '../front-end/weather-app/dist')));
+app.use(express.static(path.join(__dirname, '../my-app/dist')));
 
 // Set our api routes
 app.use('/weather', api);
 
 // Catch all other routes and return the index file
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname,'../front-end/weather-app/dist/index.html'));
+  res.sendFile(path.join(__dirname,'../my-app/dist/index.html'));
 });
 
 /**
