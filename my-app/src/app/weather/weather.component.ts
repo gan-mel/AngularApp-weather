@@ -43,7 +43,7 @@ for (let i = 0, len = this.forecasts.list.length; i < len; i++) {
 
 } else if (this.forecasts.list[i].weather[0].main.toLowerCase().indexOf('clouds') > -1) {
 
-          this.forecasts.list[i].image = 'https://dzineblog.com/wp-content/uploads/2012/10/01-sun-rays-after-rainfall.png';
+          this.forecasts.list[i].image = 'http://icons.iconarchive.com/icons/icons8/windows-8/96/Weather-Clouds-icon.png';
 
  } else if (this.forecasts.list[i].weather[0].main.toLowerCase().indexOf('clear') > -1) {
 
@@ -64,7 +64,7 @@ currentImg() {
 
   } else if (this.weathers.weather[0].main.toLowerCase().indexOf('clouds') > -1) {
 
-    this.weathers.weather[0].image = 'https://www.brecorder.com/images/2017/01/cloud.jpg';
+    this.weathers.weather[0].image = 'https://dzineblog.com/wp-content/uploads/2012/10/01-sun-rays-after-rainfall.png';
 
   } else if (this.weathers.weather[0].main.toLowerCase().indexOf('clear') > -1) {
 
