@@ -1,21 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const env = process.env.NODE_ENV || 'development';
-
+const jsan = require('jsan');
 //TODO: set up the settings in a seperate file
 const config = require('../../config')[env];
-
-//I seemed to get some error about circular json from open-weather so I attempted to resolve it with the following library
-var CircularJSON = require('circular-json');
 
 //http requests library
 const axios = require('axios');
 
-
 const BASE_URL = 'http://api.openweathermap.org/data/2.5/weather?q=';
 const AppID = '&appid=ccb590a0560985ff822bf94472c905cc';
 
- //TODO for both: read from constant c
+ //TODO for both: read from constants and make sure it returns 500 if the you get a 404 from the API
  // Get the current weather json /weather
 router.get('/getCity/:city', (req, res) => {
   const requestedCityName = req.params.city
@@ -43,9 +39,14 @@ router.get('/getCity/:city', (req, res) => {
 
 axios.get('http://api.openweathermap.org/data/2.5/forecast?q='+requestedCityNameF+'&units=metric&appid=ccb590a0560985ff822bf94472c905cc')
 .then(forecast => {
-   // console.log(res)
+   
+   if(forecast.data.cod.indexOf('404') > -1 ){
+// console.log(forecast.data.cod.indexOf('404') + " Index")
+    res.status(500).send(error)
     console.log(forecast.data + "  Forecast Requested")
+  } else{
     res.status(200).json(forecast.data);
+  }
   })
   .catch(error => {
     res.status(500).send(error)

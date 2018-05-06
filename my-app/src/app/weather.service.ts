@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
-
+import { Observable } from 'rxjs/Observable';
 
 
 
@@ -27,12 +27,13 @@ export class WeatherService {
 
 
 
-  getWeather(city) {
+  getWeather(city): Observable<any[]> {
     return this.http.get('weather/getCity/' + city)
       .map(res => res.json())     ;
   }
-  getForecast(city) {
+  getForecast(city): Observable<any[]> {
     return this.http.get('weather/getCity/fiveday/' + city)
       .map(res => res.json())    ;
   }
+
 }

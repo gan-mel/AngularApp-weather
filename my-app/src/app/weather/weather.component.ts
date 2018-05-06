@@ -1,20 +1,26 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {WeatherService} from '../weather.service';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/timer';
+import 'rxjs/add/operator/exhaustMap';
+import 'rxjs/add/operator/first';
+import 'rxjs/add/operator/takeWhile';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-weather-component',
   templateUrl: './weather.component.html',
   styleUrls: ['./weather.component.css']
 })
-export class WeatherComponent implements OnInit {
+export class WeatherComponent implements OnInit, OnDestroy {
 
 
   public shown = false;
-  cityName: string;
   weathers: any = [];
   forecasts: any = [];
-
+  alive = true;
+  sub: Subscription;
   constructor(private _weatherService: WeatherService) {
 
 
@@ -22,10 +28,15 @@ export class WeatherComponent implements OnInit {
   // Bind to the weather fucntions with interval of 60 seconds
   // TODO: Need to fix the timings, either with the interval or the template so the images load together with the content immediately
   ngOnInit() {
-      setInterval(this.submitDataBox.bind(this, this.cityName), 60000);
-      setInterval(this.submitData.bind(this, this.cityName), 60000);
-      setInterval(this.weatherImage.bind(this), 5000);
-      setInterval(this.currentImg.bind(this), 2000);
+    //   setInterval(this.submitDataBox.bind(this, this.cityName), 60000);
+    //   setInterval(this.submitData.bind(this, this.cityName), 60000);
+    //   setInterval(this.weatherImage.bind(this), 5000);
+    //   setInterval(this.currentImg.bind(this), 2000);
+  }
+
+  ngOnDestroy(): void {
+    this.alive = false; // switches IntervalObservable off
+
   }
 
   // Change icons of the forecast for each of the items
@@ -77,22 +88,31 @@ export class WeatherComponent implements OnInit {
 
   // Get the CURRENT weather
 
-  submitData(cityName) {
-      const mycity = this.cityName;
-      this._weatherService.getWeather(mycity)
-      .subscribe( weathers => {
-          this.weathers = weathers;
-        }
+  submitData2(cityName) {
+  if (this.sub) { this.sub.unsubscribe(); }
+
+  this.sub =
+     Observable.timer(0, 10000)
+      .takeWhile(() => this.alive) // only fires when component is alive
+      .exhaustMap(() => {
+           return   this._weatherService.getWeather(cityName).first();
+        })
+      .subscribe(weathers => {
+         this.weathers = weathers;
+        console.log(weathers);
+        this.currentImg();
+      },
+      err => {console.log(err)},
+      () => {console.log('end')}
       );
-      return this.weathers;
-  }
+    }
+
 
 
   // Get a five day forecast divided with 3 hour jumps
 
   submitDataBox(cityName) {
-      const mycity = this.cityName;
-      this._weatherService.getForecast(mycity).subscribe(forecasts => {
+      this._weatherService.getForecast(cityName).subscribe(forecasts => {
           this.forecasts = forecasts;
 
 
