@@ -19,8 +19,10 @@ export class WeatherComponent implements OnInit, OnDestroy {
   public shown = false;
   weathers: any = [];
   forecasts: any = [];
+  clearImage: any = [];
   alive = true;
   sub: Subscription;
+  sub2: Subscription;
   constructor(private _weatherService: WeatherService) {
 
 
@@ -35,7 +37,7 @@ export class WeatherComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.alive = false; // switches IntervalObservable off
+    this.alive = false; // switches Interval Observable off
 
   }
 
@@ -84,6 +86,27 @@ export class WeatherComponent implements OnInit, OnDestroy {
   }
 
 
+//   currentImg2() {
+//         const flist = this.forecasts.list;
+//         const image = flist.filter(images =>
+
+//              images.weather[0].main.toLowerCase().indexOf('clear') > -1
+
+//         );
+
+// this.clearImage = image;
+
+// //console.log(JSON.stringify(this.clearImage) + '  filtered');
+
+// const mapper = this.clearImage.map( x => {
+
+//     x.imaging = 'http://icons.iconarchive.com/icons/icons8/ios7/96/Weather-Sun-icon.png';
+//     return x;
+// });
+// this.clearImage = mapper;
+
+// console.log(JSON.stringify(mapper) + '  Mapped');
+// }
 
 
   // Get the CURRENT weather
@@ -92,33 +115,76 @@ export class WeatherComponent implements OnInit, OnDestroy {
   if (this.sub) { this.sub.unsubscribe(); }
 
   this.sub =
-     Observable.timer(0, 10000)
-      .takeWhile(() => this.alive) // only fires when component is alive
+     Observable.timer(0, 60000)
+      .takeWhile(() => this.alive) // only fires when component is not destroyed
       .exhaustMap(() => {
-           return   this._weatherService.getWeather(cityName).first();
+           return   this._weatherService.getWeather(cityName).first(); //  Get from service
         })
       .subscribe(weathers => {
-         this.weathers = weathers;
+         this.weathers = weathers;  // Push results to weathers array
         console.log(weathers);
         this.currentImg();
       },
-      err => {console.log(err)},
-      () => {console.log('end')}
+      err => { console.log(err); },
+      ()  => { console.log('end'); }
       );
     }
 
+    currentImg2() {
+
+        this.forecasts.list = this.forecasts.list
+                .filter(item =>
+             item.weather[0].main.toLowerCase().indexOf('clear') > -1 ||
+             item.weather[0].main.toLowerCase().indexOf('rain') > -1 ||
+             item.weather[0].main.toLowerCase().indexOf('clouds') > -1
+                )
+
+
+                .map(item => {
+      if (item.weather[0].main.toLowerCase().indexOf('clear') > -1) {
+         item.imaging = 'https://cdn3.iconfinder.com/data/icons/weather-icons-8/512/weather-sunny-64.png';
+         return item;
+      } else
+
+      if (item.weather[0].main.toLowerCase().indexOf('clouds') > -1) {
+         item.imaging = 'https://cdn3.iconfinder.com/data/icons/linecons-free-vector-icons-pack/32/cloud-64.png';
+         return item;
+      } else
+
+      if (item.weather[0].main.toLowerCase().indexOf('rain') > -1) {
+         item.imaging = 'https://cdn3.iconfinder.com/data/icons/weather-icons-8/512/weather-rainy-h-64.png';
+         return item;
+      }
+
+      });
+
+    }
 
 
   // Get a five day forecast divided with 3 hour jumps
 
   submitDataBox(cityName) {
-      this._weatherService.getForecast(cityName).subscribe(forecasts => {
-          this.forecasts = forecasts;
+
+    if (this.sub2) { this.sub2.unsubscribe(); }
+
+    this.sub2 =
+       Observable.timer(0, 60000)
+        .takeWhile(() => this.alive) // only fires when component is not destroyed
+        .exhaustMap(() => {
+             return   this._weatherService.getForecast(cityName).first();
+          })
+        .subscribe(forecasts => {
+           this.forecasts = forecasts;
+          console.log(forecasts);
+          // this.weatherImage();
+          this.currentImg2();
+        },
+        err => { console.log(err); },
+        ()  => { console.log('end'); }
+        );
+      }
 
 
-      });
-      return this.forecasts;
-  }
 
 
 
